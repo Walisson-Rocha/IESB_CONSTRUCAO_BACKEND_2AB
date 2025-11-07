@@ -1,26 +1,26 @@
-const Joi = require("joi");
+const yup = require("yup");
 const { isValidObjectId } = require("./IDValidator");
 
-const createProjetoSchema = Joi.object({
-  nome: Joi.string().required(),
-  descricao: Joi.string().allow(""),
-  departamento: Joi.string().custom((value, helpers) => {
+const createProjetoSchema = yup.object({
+  nome: yup.string().required(),
+  descricao: yup.string().allow(""),
+  departamento: yup.string().custom((value, helpers) => {
     if (!isValidObjectId(value)) return helpers.error("any.invalid");
     return value;
   }).required(),
-  data_inicio: Joi.date().required(),
-  data_fim: Joi.date().greater(Joi.ref("data_inicio")).required(),
+  data_inicio: yup.date().required(),
+  data_fim: yup.date().greater(yup.ref("data_inicio")).required(),
 });
 
-const updateProjetoSchema = Joi.object({
-  nome: Joi.string(),
-  descricao: Joi.string(),
-  departamento: Joi.string().custom((value, helpers) => {
+const updateProjetoSchema = yup.object({
+  nome: yup.string(),
+  descricao: yup.string(),
+  departamento: yup.string().custom((value, helpers) => {
     if (!isValidObjectId(value)) return helpers.error("any.invalid");
     return value;
   }),
-  data_inicio: Joi.date(),
-  data_fim: Joi.date().greater(Joi.ref("data_inicio")),
+  data_inicio: yup.date(),
+  data_fim: yup.date().greater(yup.ref("data_inicio")),
 });
 
 module.exports = { createProjetoSchema, updateProjetoSchema };
